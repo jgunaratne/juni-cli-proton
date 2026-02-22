@@ -68,6 +68,8 @@ function App() {
   const [fontSize, setFontSize] = useState(saved.fontSize || 14);
   const [bgColor, setBgColor] = useState(saved.bgColor || '#0d1117');
   const [claudeEnabled, setClaudeEnabled] = useState(saved.claudeEnabled ?? false);
+  const [geminiApiKey, setGeminiApiKey] = useState(saved.geminiApiKey || '');
+  const [showApiKey, setShowApiKey] = useState(false);
 
   const terminalRefs = useRef({});
   const splitGeminiRef = useRef(null);
@@ -93,8 +95,8 @@ function App() {
   }, [fontFamily]);
 
   useEffect(() => {
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ fontFamily, fontSize, bgColor, claudeEnabled, splitMode }));
-  }, [fontFamily, fontSize, bgColor, claudeEnabled, splitMode]);
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ fontFamily, fontSize, bgColor, claudeEnabled, splitMode, geminiApiKey }));
+  }, [fontFamily, fontSize, bgColor, claudeEnabled, splitMode, geminiApiKey]);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--terminal-font', `'${fontFamily}', monospace`);
@@ -441,6 +443,33 @@ function App() {
                   <span className="settings-toggle-label">Enable Claude</span>
                 </label>
 
+                <div className="settings-group">
+                  <label className="settings-label">Gemini API Key (GenAI)</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <input
+                      className="settings-input"
+                      type={showApiKey ? 'text' : 'password'}
+                      value={geminiApiKey}
+                      onChange={(e) => setGeminiApiKey(e.target.value)}
+                      placeholder="Enter your Gemini API key…"
+                      spellCheck="false"
+                      autoComplete="off"
+                      style={{ flex: 1, fontFamily: 'monospace' }}
+                    />
+                    <button
+                      className="settings-reset-btn"
+                      onClick={() => setShowApiKey((prev) => !prev)}
+                      title={showApiKey ? 'Hide API key' : 'Show API key'}
+                      style={{ minWidth: '52px' }}
+                    >
+                      {showApiKey ? 'Hide' : 'Show'}
+                    </button>
+                  </div>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '6px', lineHeight: 1.4 }}>
+                    Required for Gemini 3 Flash (Google AI).
+                  </div>
+                </div>
+
                 <div className="settings-preview" style={{ fontFamily: `'${fontFamily}', monospace`, fontSize: `${fontSize}px` }}>
                   The quick brown fox jumps over the lazy dog
                 </div>
@@ -551,6 +580,7 @@ function App() {
                   onSendAgentKeys={handleSendAgentKeys}
                   onAbortAgentCapture={handleAbortAgentCapture}
                   serverUrl={serverUrl}
+                    apiKey={geminiApiKey}
                 />
               )
             ) : tab.type === 'claude' ? (
@@ -586,6 +616,7 @@ function App() {
                 onSendAgentKeys={handleSendAgentKeys}
                 onAbortAgentCapture={handleAbortAgentCapture}
                 serverUrl={serverUrl}
+                apiKey={geminiApiKey}
               />
             </div>
           </>

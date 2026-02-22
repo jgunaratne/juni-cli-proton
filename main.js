@@ -53,8 +53,8 @@ function getVertexClient(project, location) {
 
 /* ── Generative Language API (Google AI) Helper ───────────── */
 
-async function callGenAI(model, requestBody) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+async function callGenAI(model, apiKey, requestBody) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -127,6 +127,7 @@ function startServer() {
           messages = [],
           project,
           location,
+          apiKey,
         } = req.body;
 
         if (!Array.isArray(messages) || messages.length === 0) {
@@ -141,13 +142,14 @@ function startServer() {
         let text;
 
         if (GENAI_MODELS.includes(model)) {
-          if (!GEMINI_API_KEY) {
+          const resolvedKey = apiKey || GEMINI_API_KEY;
+          if (!resolvedKey) {
             return res.status(400).json({
-              error: 'GEMINI_API_KEY is required for this model. Set it in Settings.',
+              error: 'Gemini API key is required for this model. Add it in Settings or set GEMINI_API_KEY.',
             });
           }
 
-          const data = await callGenAI(model, {
+          const data = await callGenAI(model, resolvedKey, {
             contents,
             systemInstruction: {
               parts: [{ text: 'You are a Linux/macOS expert. Every time you mention a terminal command, you must wrap it in <cmd> and </cmd> tags. Example: Use <cmd>ls -la</cmd> to list files.' }],
@@ -302,6 +304,7 @@ function startServer() {
           history = [],
           project,
           location,
+          apiKey,
         } = req.body;
 
         const contents = history.map((entry) => ({
@@ -316,9 +319,10 @@ function startServer() {
         let parts;
 
         if (GENAI_MODELS.includes(model)) {
-          if (!GEMINI_API_KEY) {
+          const resolvedKey = apiKey || GEMINI_API_KEY;
+          if (!resolvedKey) {
             return res.status(400).json({
-              error: 'GEMINI_API_KEY is required for this model. Set it in Settings.',
+              error: 'Gemini API key is required for this model. Add it in Settings or set GEMINI_API_KEY.',
             });
           }
 
@@ -329,7 +333,7 @@ function startServer() {
             })),
           }));
 
-          const data = await callGenAI(model, {
+          const data = await callGenAI(model, resolvedKey, {
             contents,
             systemInstruction: {
               parts: [{ text: AGENT_SYSTEM_PROMPT }],
