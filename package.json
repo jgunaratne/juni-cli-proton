@@ -1,0 +1,56 @@
+{
+  "name": "juni-cli-proton",
+  "version": "1.0.0",
+  "description": "juni-cli native macOS desktop application built on Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"cd renderer && npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "build:renderer": "cd renderer && npm run build",
+    "build": "npm run build:renderer && electron-builder --mac",
+    "pack": "npm run build:renderer && electron-builder --mac --dir"
+  },
+  "build": {
+    "appId": "com.junius.juni-cli-proton",
+    "productName": "juni-cli-proton",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": ["dmg", "zip"],
+      "icon": "assets/icon.icns"
+    },
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "server/**/*",
+      "renderer/dist/**/*",
+      "assets/**/*",
+      "!**/node_modules/.cache"
+    ],
+    "extraResources": [
+      {
+        "from": "server/node_modules",
+        "to": "server/node_modules"
+      }
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "electron": "^35.2.1",
+    "electron-builder": "^26.0.12",
+    "wait-on": "^8.0.3"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
+    "@google-cloud/vertexai": "^1.10.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
+    "electron-store": "^10.0.0",
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1",
+    "ssh2": "^1.16.0"
+  }
+}
