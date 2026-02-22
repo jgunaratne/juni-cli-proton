@@ -144,6 +144,19 @@ function App() {
     setShowForm(false);
   }, []);
 
+  const handleLocalConnect = useCallback(() => {
+    const id = nextId++;
+    const newTab = {
+      id,
+      type: 'ssh',
+      connection: { host: 'localhost', port: 0, username: '', local: true },
+      status: 'connecting',
+    };
+    setTabs((prev) => [...prev, newTab]);
+    setActiveTab(id);
+    setShowForm(false);
+  }, []);
+
   const handleOpenGemini = useCallback(() => {
     const id = nextId++;
     const newTab = { id, type: 'gemini', status: 'connecting' };
@@ -262,6 +275,7 @@ function App() {
   const getTabLabel = (tab) => {
     if (tab.type === 'gemini') return 'Gemini';
     if (tab.type === 'claude') return 'Claude';
+    if (tab.connection?.local) return 'local';
     return `${tab.connection.username}@${tab.connection.host}`;
   };
 
@@ -503,7 +517,7 @@ function App() {
       <main className={`app-main ${splitMode ? 'app-main--split' : ''}`}>
         {/* Left panel (or full panel when not split) */}
         <div className={`split-panel split-panel--left ${splitMode ? '' : 'split-panel--full'}`}>
-          {showForm && <ConnectionForm onConnect={handleConnect} />}
+          {showForm && <ConnectionForm onConnect={handleConnect} onLocalConnect={handleLocalConnect} />}
 
           {tabs.map((tab) =>
             tab.type === 'ssh' ? (

@@ -831,18 +831,115 @@
   padding: 24px;
 }
 
-.connection-form {
+.connection-form-container {
   width: 100%;
   max-width: 460px;
+  animation: fadeUp 0.4s ease-out;
+}
+
+/* ── Local Terminal Button ──────────────────────── */
+.local-terminal-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(129, 140, 248, 0.06) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: left;
+  color: var(--text-primary);
+}
+
+.local-terminal-btn:hover {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.14) 0%, rgba(129, 140, 248, 0.1) 100%);
+  border-color: rgba(167, 139, 250, 0.5);
+  box-shadow: 0 4px 20px rgba(167, 139, 250, 0.15);
+  transform: translateY(-1px);
+}
+
+.local-terminal-btn:active {
+  transform: translateY(0);
+}
+
+.local-terminal-icon {
+  font-size: 28px;
+  color: var(--proton-accent, #a78bfa);
+  filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.4));
+  flex-shrink: 0;
+}
+
+.local-terminal-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.local-terminal-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.local-terminal-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.local-terminal-arrow {
+  font-size: 20px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.local-terminal-btn:hover .local-terminal-arrow {
+  transform: translateX(3px);
+  color: var(--proton-accent, #a78bfa);
+}
+
+/* ── Form Divider ──────────────────────────────── */
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0 20px;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.form-divider-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.connection-form {
+  width: 100%;
   background: var(--bg-card);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 40px 36px;
+  padding: 28px 28px;
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(88, 166, 255, 0.04);
-  animation: fadeUp 0.4s ease-out;
 }
 
 @keyframes fadeUp {

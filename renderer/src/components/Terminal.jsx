@@ -239,8 +239,14 @@ const Terminal = forwardRef(function Terminal({ tabId, connection, isActive, onS
     xtermRef.current = term;
     fitRef.current = fit;
 
+    const isLocal = connection.local;
+
     term.writeln('\x1b[1;36m⬡ juni-cli-proton\x1b[0m');
-    term.writeln(`\x1b[90mConnecting to ${connection.username}@${connection.host}:${connection.port}…\x1b[0m`);
+    if (isLocal) {
+      term.writeln('\x1b[90mOpening local shell…\x1b[0m');
+    } else {
+      term.writeln(`\x1b[90mConnecting to ${connection.username}@${connection.host}:${connection.port}…\x1b[0m`);
+    }
     term.writeln('');
 
     const socket = io(serverUrl, { transports: ['websocket'] });
@@ -352,7 +358,10 @@ const Terminal = forwardRef(function Terminal({ tabId, connection, isActive, onS
       <div className="terminal-toolbar">
         <div className="toolbar-left">
           <span className="terminal-title">
-            {connection.username}@{connection.host}:{connection.port}
+            {connection.local
+              ? 'local shell'
+              : `${connection.username}@${connection.host}:${connection.port}`
+            }
           </span>
         </div>
         <button className="disconnect-btn" onClick={onClose}>

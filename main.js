@@ -6,6 +6,15 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 const { Client } = require('ssh2');
 const { VertexAI } = require('@google-cloud/vertexai');
+const os = require('os');
+let pty;
+try {
+  pty = require('node-pty');
+} catch (err) {
+  console.warn('[proton] node-pty not available:', err.message);
+}
+
+const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1'];
 
 /* ── Environment ──────────────────────────────────────────── */
 
@@ -422,11 +431,78 @@ function startServer() {
 
       let sshClient = null;
       let sshStream = null;
+      let ptyProcess = null;
       let pendingSize = { rows: 24, cols: 80 };
 
-      socket.on('ssh:connect', (credentials) => {
-        const { host, port = 22, username, password, privateKey } = credentials;
+      /* ── Helper: write to whichever backend is active ── */
+      const writeToBackend = (data) => {
+        if (ptyProcess) ptyProcess.write(data);
+        else if (sshStream) sshStream.write(data);
+      };
 
+      const resizeBackend = (cols, rows) => {
+        pendingSize = { rows, cols };
+        if (ptyProcess) ptyProcess.resize(cols, rows);
+        else if (sshStream) sshStream.setWindow(rows, cols, 0, 0);
+      };
+
+      const cleanupBackend = () => {
+        if (ptyProcess) {
+          ptyProcess.kill();
+          ptyProcess = null;
+        }
+        if (sshStream) sshStream.end();
+        if (sshClient) sshClient.end();
+        sshStream = null;
+        sshClient = null;
+      };
+
+      socket.on('ssh:connect', (credentials) => {
+        const { host, port = 22, username, password, privateKey, local } = credentials;
+        const isLocal = local || LOCAL_HOSTS.includes(host);
+
+        /* ── Local terminal (no login required) ────────── */
+        if (isLocal) {
+          if (!pty) {
+            socket.emit('ssh:error', { message: 'node-pty is not available. Cannot open local terminal.' });
+            return;
+          }
+
+          console.log('[local] spawning local shell');
+          socket.emit('ssh:status', { status: 'authenticated' });
+
+          const shellPath = process.env.SHELL || '/bin/zsh';
+          const homeDir = os.homedir();
+
+          ptyProcess = pty.spawn(shellPath, [], {
+            name: 'xterm-256color',
+            cols: pendingSize.cols,
+            rows: pendingSize.rows,
+            cwd: homeDir,
+            env: {
+              ...process.env,
+              TERM: 'xterm-256color',
+              HOME: homeDir,
+              LANG: process.env.LANG || 'en_US.UTF-8',
+            },
+          });
+
+          socket.emit('ssh:status', { status: 'ready' });
+
+          ptyProcess.onData((data) => {
+            socket.emit('ssh:output', data);
+          });
+
+          ptyProcess.onExit(({ exitCode, signal }) => {
+            console.log(`[local] shell exited  code=${exitCode} signal=${signal}`);
+            socket.emit('ssh:status', { status: 'disconnected' });
+            ptyProcess = null;
+          });
+
+          return;
+        }
+
+        /* ── Remote SSH connection ──────────────────────── */
         console.log(`[ssh] connecting to ${username}@${host}:${port}`);
         sshClient = new Client();
 
@@ -494,18 +570,16 @@ function startServer() {
       });
 
       socket.on('ssh:data', (data) => {
-        if (sshStream) sshStream.write(data);
+        writeToBackend(data);
       });
 
       socket.on('ssh:resize', ({ cols, rows }) => {
-        pendingSize = { rows, cols };
-        if (sshStream) sshStream.setWindow(rows, cols, 0, 0);
+        resizeBackend(cols, rows);
       });
 
       socket.on('disconnect', () => {
         console.log(`[socket] client disconnected  id=${socket.id}`);
-        if (sshStream) sshStream.end();
-        if (sshClient) sshClient.end();
+        cleanupBackend();
       });
     });
 
