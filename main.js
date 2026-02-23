@@ -478,7 +478,7 @@ function startServer() {
           const shellPath = process.env.SHELL || '/bin/zsh';
           const homeDir = os.homedir();
 
-          ptyProcess = pty.spawn(shellPath, [], {
+          ptyProcess = pty.spawn(shellPath, ['-l'], {
             name: 'xterm-256color',
             cols: pendingSize.cols,
             rows: pendingSize.rows,

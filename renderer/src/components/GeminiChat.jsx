@@ -559,7 +559,7 @@ const GeminiChat = forwardRef(function GeminiChat({
           )}
           {!agentRunning && (
             <button className="disconnect-btn new-chat-btn" onClick={handleNewChat} title="Start a new chat">
-              ✦+ New Chat
+              + New Chat
             </button>
           )}
           <button className="disconnect-btn" onClick={handleClear} title="Clear screen">

@@ -10,8 +10,8 @@ let nextId = 1;
 const SPLIT_GEMINI_ID = '__split_gemini__';
 
 const GEMINI_MODELS = [
-  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash' },
   { id: 'gemini-3-flash-preview', label: 'Gemini 3 Flash' },
+  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash' },
 ];
 
 const MONO_FONTS = [
@@ -58,7 +58,7 @@ function App() {
   const [splitGeminiStatus, setSplitGeminiStatus] = useState('connecting');
   const [splitFocus, setSplitFocus] = useState('left');
   const [splitRatio, setSplitRatio] = useState(50);
-  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
+  const [selectedModel, setSelectedModel] = useState('gemini-3-flash-preview');
   const [autoExecute, setAutoExecute] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [agentMode, setAgentMode] = useState(false);
