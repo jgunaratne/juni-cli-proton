@@ -62,6 +62,7 @@ function App() {
   const [autoExecute, setAutoExecute] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [agentMode, setAgentMode] = useState(false);
+  const [stepThrough, setStepThrough] = useState(false);
   const [serverUrl, setServerUrl] = useState('');
 
   const saved = loadSettings();
@@ -403,6 +404,15 @@ function App() {
                 <span className="agent-toggle-icon">⚡</span>
                 {agentMode ? 'Agent ON' : 'Agent'}
               </button>
+              {agentMode && (
+                <button
+                  className={`agent-toggle ${stepThrough ? 'agent-toggle--active' : ''}`}
+                  onClick={() => setStepThrough((prev) => !prev)}
+                  title={stepThrough ? 'Disable step-through: commands run automatically' : 'Enable step-through: approve each command before it runs'}
+                >
+                  {stepThrough ? '⏯ Step ON' : '⏯ Step'}
+                </button>
+              )}
             </>
           )}
           <div className="settings-wrapper" ref={settingsRef}>
@@ -611,6 +621,13 @@ function App() {
                   onRunAgentCommand={handleRunAgentCommand}
                   onSendAgentKeys={handleSendAgentKeys}
                   onAbortAgentCapture={handleAbortAgentCapture}
+                    onReadTerminal={() => {
+                      const sshTabId = activeTab && tabs.find((t) => t.id === activeTab && t.type === 'ssh') ? activeTab : tabs.find((t) => t.type === 'ssh')?.id;
+                      if (!sshTabId) return '(No terminal connected)';
+                      const termRef = terminalRefs.current[sshTabId];
+                      return termRef ? termRef.getBufferText() : '(Terminal ref not found)';
+                    }}
+                    stepThrough={stepThrough}
                   serverUrl={serverUrl}
                     apiKey={geminiApiKey}
                 />
@@ -647,6 +664,13 @@ function App() {
                 onRunAgentCommand={handleRunAgentCommand}
                 onSendAgentKeys={handleSendAgentKeys}
                 onAbortAgentCapture={handleAbortAgentCapture}
+                onReadTerminal={() => {
+                  const sshTabId = activeTab && tabs.find((t) => t.id === activeTab && t.type === 'ssh') ? activeTab : tabs.find((t) => t.type === 'ssh')?.id;
+                  if (!sshTabId) return '(No terminal connected)';
+                  const termRef = terminalRefs.current[sshTabId];
+                  return termRef ? termRef.getBufferText() : '(Terminal ref not found)';
+                }}
+                stepThrough={stepThrough}
                 serverUrl={serverUrl}
                 apiKey={geminiApiKey}
               />

@@ -1884,3 +1884,172 @@
   color: #d29922;
   line-height: 1.5;
 }
+/* ── Skipped step styling ────────────────────────── */
+
+.agent-step-skipped-msg {
+  margin-top: 6px;
+  color: #8b949e;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.agent-step--skipped {
+  opacity: 0.6;
+}
+
+/* ── Ask user question styling ───────────────────── */
+
+.agent-step--ask_user {
+  background: var(--terminal-bg, #0d1117);
+  border: 1px solid rgba(188, 140, 255, 0.25);
+}
+
+.agent-step-header--question {
+  color: #bc8cff;
+}
+
+.agent-step-question {
+  padding: 6px 10px;
+  margin: 4px 0;
+  color: #d2a8ff;
+  font-size: inherit;
+  line-height: 1.5;
+}
+
+.agent-step-answer {
+  padding: 4px 10px;
+  color: #7ee787;
+  line-height: 1.5;
+}
+
+.agent-question-indicator {
+  margin: 8px 0;
+  padding: 12px 14px;
+  background: rgba(188, 140, 255, 0.06);
+  border: 1px solid rgba(188, 140, 255, 0.25);
+  border-radius: 6px;
+  animation: agentPausedFade 2s ease-in-out infinite;
+}
+
+.agent-question-text {
+  color: #d2a8ff;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.agent-question-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.agent-question-input {
+  flex: 1;
+  font-family: var(--terminal-font, 'Ubuntu Mono', monospace);
+  font-size: var(--terminal-font-size, 14px);
+  line-height: 1.5;
+  color: #f0f6fc;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(188, 140, 255, 0.3);
+  border-radius: 4px;
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.agent-question-input:focus {
+  border-color: rgba(188, 140, 255, 0.6);
+}
+
+.agent-question-submit {
+  height: 32px;
+  padding: 0 14px;
+  background: rgba(188, 140, 255, 0.15);
+  border: 1px solid rgba(188, 140, 255, 0.3);
+  border-radius: 4px;
+  color: #d2a8ff;
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.agent-question-submit:hover {
+  background: rgba(188, 140, 255, 0.25);
+  border-color: rgba(188, 140, 255, 0.5);
+}
+
+/* ── Read terminal step styling ──────────────────── */
+
+.agent-step--read_terminal {
+  background: var(--terminal-bg, #0d1117);
+  border: 1px solid rgba(57, 211, 83, 0.15);
+}
+
+/* ── Step-through approval UI ────────────────────── */
+
+.agent-approval-indicator {
+  margin: 8px 0;
+  padding: 12px 14px;
+  background: rgba(251, 188, 4, 0.06);
+  border: 1px solid rgba(251, 188, 4, 0.25);
+  border-radius: 6px;
+  animation: agentPausedFade 2s ease-in-out infinite;
+}
+
+.agent-approval-header {
+  color: #7ee787;
+  margin-bottom: 4px;
+  line-height: 1.5;
+  font-size: inherit;
+}
+
+.agent-approval-reason {
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.agent-approval-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.agent-approve-btn {
+  height: 30px;
+  padding: 0 14px;
+  background: rgba(86, 211, 100, 0.12);
+  border: 1px solid rgba(86, 211, 100, 0.3);
+  border-radius: 4px;
+  color: #56d364;
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.agent-approve-btn:hover {
+  background: rgba(86, 211, 100, 0.22);
+  border-color: rgba(86, 211, 100, 0.5);
+}
+
+.agent-skip-btn {
+  height: 30px;
+  padding: 0 14px;
+  background: rgba(255, 123, 114, 0.1);
+  border: 1px solid rgba(255, 123, 114, 0.3);
+  border-radius: 4px;
+  color: #ff7b72;
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.agent-skip-btn:hover {
+  background: rgba(255, 123, 114, 0.2);
+  border-color: rgba(255, 123, 114, 0.5);
+}

@@ -261,6 +261,44 @@ function startServer() {
               required: ['summary'],
             },
           },
+          {
+            name: 'ask_user',
+            description:
+              'Ask the user a clarifying question and wait for their response. ' +
+              'Use this when you need more information before proceeding, when there are multiple valid approaches and you want the user to choose, ' +
+              'or before performing a potentially destructive action that requires explicit confirmation.',
+            parameters: {
+              type: 'OBJECT',
+              properties: {
+                question: {
+                  type: 'STRING',
+                  description: 'The question to ask the user',
+                },
+                reasoning: {
+                  type: 'STRING',
+                  description: 'Brief explanation of why you need to ask this question',
+                },
+              },
+              required: ['question', 'reasoning'],
+            },
+          },
+          {
+            name: 'read_terminal',
+            description:
+              'Read the current content visible in the terminal buffer without running any command. ' +
+              'Use this to inspect the terminal state after sending keys, check on a long-running process, ' +
+              'or see what is currently displayed. Returns the full terminal buffer text.',
+            parameters: {
+              type: 'OBJECT',
+              properties: {
+                reasoning: {
+                  type: 'STRING',
+                  description: 'Brief explanation of why you need to read the terminal',
+                },
+              },
+              required: ['reasoning'],
+            },
+          },
         ],
       },
     ];
@@ -283,8 +321,12 @@ function startServer() {
       '  * Interact with a running program that expects input\n' +
       '  * Type text into a TUI or interactive application\n' +
       'Note: send_keys only captures a brief snapshot of terminal output (~3 seconds), not strict command-completion output.\n' +
-      '\n\nCRITICAL RULES:\n' +
-      '1. Prefer run_command over send_keys for standard commands — send_keys is for interactive situations only. ' +
+  '- ask_user: Ask the user a clarifying question and wait for their text response. Use when you need clarification, ' +
+  'when there are multiple valid approaches, or before destructive actions.\n' +
+  '- read_terminal: Read the current terminal buffer content without running a command. Use to inspect terminal state, ' +
+  'check on long-running processes, or see what is displayed after sending keys.\n' +
+  '\n\nCRITICAL RULES:\n' +
+  '1. Prefer run_command over send_keys for standard commands — send_keys is for interactive situations only. ' +
       '2. NEVER run interactive commands that wait for user input via run_command (vim, nano, vi, less, more, top, htop, python, node, ssh, mysql, psql, irb, etc). ' +
       'If you must interact with such programs, prefer non-interactive alternatives. If absolutely necessary, use send_keys. ' +
       '3. Always use non-interactive flags: use -y for apt/yum/dnf, use DEBIAN_FRONTEND=noninteractive, use -f for commands that prompt. ' +
