@@ -39,7 +39,7 @@
 }
 
 .proton-loading-text {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 14px;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
@@ -131,7 +131,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-muted);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -181,7 +181,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-secondary);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -262,7 +262,7 @@
 }
 
 .auto-execute-label {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
@@ -338,7 +338,7 @@
 }
 
 .settings-title {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
@@ -353,7 +353,7 @@
 
 .settings-label {
   display: block;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
@@ -370,7 +370,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 13px;
   cursor: pointer;
   appearance: none;
@@ -465,7 +465,7 @@
 }
 
 .settings-toggle-label {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
@@ -608,7 +608,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Ubuntu Mono', monospace;
 }
 
 .tab-close {
@@ -739,7 +739,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-primary);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   transition: border-color 0.2s;
   box-sizing: border-box;
@@ -797,29 +797,47 @@
 }
 
 .app-main--split .split-panel--left {
-  flex: 1;
-  min-width: 0;
+  flex: none;
+    width: var(--split-left-width, 50%);
+    min-width: 200px;
 }
 
 .app-main--split .split-panel--right {
   flex: 1;
-  min-width: 0;
+  min-width: 200px;
 }
 
 .split-divider {
-  width: 1px;
+  width: 5px;
   background: var(--border);
   flex-shrink: 0;
   position: relative;
+  cursor: col-resize;
+    transition: background 0.15s;
+  }
+  
+  .split-divider:hover,
+  .split-divider.dragging {
+    background: var(--accent);
 }
 
 .split-divider::after {
   content: '';
   position: absolute;
-  inset: 0;
-  width: 5px;
-  margin-left: -2px;
-  cursor: col-resize;
+  top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px;
+    height: 32px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    transition: background 0.15s, height 0.15s;
+  }
+  
+  .split-divider:hover::after,
+  .split-divider.dragging::after {
+    background: rgba(255, 255, 255, 0.4);
+    height: 48px;
 }
 
 /* ─── Connection Form ─────────────────────────────────────── */
@@ -880,7 +898,7 @@
 }
 
 .local-terminal-title {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -888,7 +906,7 @@
 }
 
 .local-terminal-sub {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   color: var(--text-muted);
 }
@@ -922,7 +940,7 @@
 }
 
 .form-divider-text {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
@@ -1009,7 +1027,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -1098,7 +1116,7 @@
 }
 
 .history-host {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 14px;
   color: var(--text-primary);
   white-space: nowrap;
@@ -1199,7 +1217,7 @@
   gap: 8px;
   background: linear-gradient(135deg, var(--accent) 0%, #3b82f6 100%);
   color: #fff;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 15px;
   font-weight: 600;
   border: none;
@@ -1233,6 +1251,7 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
+  background: var(--terminal-bg, #0d1117);
 }
 
 .terminal-toolbar {
@@ -1241,7 +1260,7 @@
   justify-content: space-between;
   padding: 0 16px;
   height: 40px;
-  background: var(--bg-tertiary);
+  background: var(--terminal-bg, #0d1117);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -1253,7 +1272,7 @@
 }
 
 .terminal-title {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   color: var(--text-secondary);
 }
@@ -1268,7 +1287,7 @@
   border: 1px solid rgba(255, 123, 114, 0.3);
   border-radius: 6px;
   color: var(--red);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -1325,7 +1344,7 @@
   padding: 16px;
   background: var(--terminal-bg, #0d1117);
   overflow-y: auto;
-  font-family: var(--terminal-font, 'JetBrains Mono', monospace);
+  font-family: var(--terminal-font, 'Ubuntu Mono', monospace);
   font-size: var(--terminal-font-size, 14px);
   font-weight: 400;
   line-height: 1.5;
@@ -1541,7 +1560,7 @@
 
 .gemini-term-input {
   flex: 1;
-  font-family: var(--terminal-font, 'JetBrains Mono', monospace);
+  font-family: var(--terminal-font, 'Ubuntu Mono', monospace);
   font-size: var(--terminal-font-size, 14px);
   line-height: 1.5;
   color: #f0f6fc;
@@ -1566,7 +1585,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-muted);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -1604,7 +1623,7 @@
   border: 1px solid rgba(240, 160, 80, 0.3);
   border-radius: 4px;
   color: #f0a050;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.08em;
